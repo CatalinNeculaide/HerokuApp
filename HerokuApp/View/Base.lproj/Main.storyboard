@@ -184,11 +184,64 @@
         <!--Filter-->
         <scene sceneID="hIG-mh-LBI">
             <objects>
-                <viewController id="Ifn-jP-afP" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="filterCV" id="Ifn-jP-afP" customClass="FilterViewController" customModule="HerokuApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="P1u-bX-Yh9">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Input Wind Probability" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DId-88-tJC">
+                                <rect key="frame" x="12" y="168" width="350" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="kMd-kL-WnT"/>
+                                    <constraint firstAttribute="width" constant="350" id="vBx-nY-BGl"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wind Probability" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0hQ-mK-cC0">
+                                <rect key="frame" x="10" y="115" width="246" height="39"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="246" id="6Qm-Yb-3dG"/>
+                                    <constraint firstAttribute="height" constant="39" id="kM3-hO-nGj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Country" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vmA-7Z-T2Y">
+                                <rect key="frame" x="10" y="240" width="129" height="41"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="41" id="12H-FB-dzK"/>
+                                    <constraint firstAttribute="width" constant="129" id="4sZ-gd-Voj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uLb-l2-X2G">
+                                <rect key="frame" x="0.0" y="293" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="iMr-MP-Rws"/>
+                                </constraints>
+                                <state key="normal" title="Select Country"/>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="0hQ-mK-cC0" firstAttribute="leading" secondItem="JPQ-VP-CNo" secondAttribute="leading" constant="10" id="0Zv-qz-3t9"/>
+                            <constraint firstItem="0hQ-mK-cC0" firstAttribute="top" secondItem="JPQ-VP-CNo" secondAttribute="top" constant="51" id="0v1-WH-75m"/>
+                            <constraint firstItem="uLb-l2-X2G" firstAttribute="top" secondItem="vmA-7Z-T2Y" secondAttribute="bottom" constant="12" id="BXQ-3j-nHR"/>
+                            <constraint firstItem="DId-88-tJC" firstAttribute="leading" secondItem="JPQ-VP-CNo" secondAttribute="leading" constant="12" id="Pdj-Dr-o63"/>
+                            <constraint firstItem="JPQ-VP-CNo" firstAttribute="trailing" secondItem="vmA-7Z-T2Y" secondAttribute="trailing" constant="236" id="RXj-ie-jZ4"/>
+                            <constraint firstItem="DId-88-tJC" firstAttribute="top" secondItem="0hQ-mK-cC0" secondAttribute="bottom" constant="14" id="STD-ti-Zw2"/>
+                            <constraint firstItem="JPQ-VP-CNo" firstAttribute="trailing" secondItem="uLb-l2-X2G" secondAttribute="trailing" id="YMF-62-tOv"/>
+                            <constraint firstItem="vmA-7Z-T2Y" firstAttribute="top" secondItem="DId-88-tJC" secondAttribute="bottom" constant="27" id="aVg-M3-qYo"/>
+                            <constraint firstItem="JPQ-VP-CNo" firstAttribute="trailing" secondItem="0hQ-mK-cC0" secondAttribute="trailing" constant="119" id="glc-gO-jee"/>
+                            <constraint firstItem="vmA-7Z-T2Y" firstAttribute="leading" secondItem="JPQ-VP-CNo" secondAttribute="leading" constant="10" id="igr-3b-TLp"/>
+                            <constraint firstItem="uLb-l2-X2G" firstAttribute="leading" secondItem="JPQ-VP-CNo" secondAttribute="leading" id="jZE-8U-sxz"/>
+                            <constraint firstItem="JPQ-VP-CNo" firstAttribute="trailing" secondItem="DId-88-tJC" secondAttribute="trailing" constant="13" id="mRn-g6-QJv"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="JPQ-VP-CNo"/>
                     </view>
                     <navigationItem key="navigationItem" title="Filter" id="wJD-NU-jWv">
@@ -210,7 +263,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NA5-tq-bb3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="241" y="719"/>
+            <point key="canvasLocation" x="240.80000000000001" y="718.29085457271367"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wmS-sb-IPw">
