@@ -56,15 +56,39 @@
 		A4143D59222DB6EF00BD1EE1 /* HerokuApp */ = {
 			isa = PBXGroup;
 			children = (
-				A4143D5A222DB6EF00BD1EE1 /* AppDelegate.swift */,
-				A4143D5C222DB6EF00BD1EE1 /* ViewController.swift */,
-				A4143D5E222DB6EF00BD1EE1 /* Main.storyboard */,
+				A4143D71222DB86D00BD1EE1 /* Controller */,
+				A4143D70222DB85B00BD1EE1 /* Model */,
+				A4143D6F222DB84600BD1EE1 /* View */,
 				A4143D64222DB6F000BD1EE1 /* Assets.xcassets */,
-				A4143D66222DB6F000BD1EE1 /* LaunchScreen.storyboard */,
 				A4143D69222DB6F000BD1EE1 /* Info.plist */,
-				A4143D61222DB6EF00BD1EE1 /* HerokuApp.xcdatamodeld */,
 			);
 			path = HerokuApp;
+			sourceTree = "<group>";
+		};
+		A4143D6F222DB84600BD1EE1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A4143D5E222DB6EF00BD1EE1 /* Main.storyboard */,
+				A4143D66222DB6F000BD1EE1 /* LaunchScreen.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A4143D70222DB85B00BD1EE1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A4143D61222DB6EF00BD1EE1 /* HerokuApp.xcdatamodeld */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A4143D71222DB86D00BD1EE1 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A4143D5A222DB6EF00BD1EE1 /* AppDelegate.swift */,
+				A4143D5C222DB6EF00BD1EE1 /* ViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
