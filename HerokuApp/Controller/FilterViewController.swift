@@ -8,25 +8,53 @@
 
 import UIKit
 
-class FilterViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class FilterViewController: UIViewController, UITextFieldDelegate, PickerViewControllerDelegate {
     
-    
-    @IBOutlet weak var countryPicker: UIPickerView!
     
     var countries: [String] = ["Romania","Italia"]
+    var selectedCountry = "None"
     
-
+    
+    @IBOutlet weak var selectCountryButton: UIButton!
+    
+    
+    static func instantiate() -> FilterViewController {
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "FilterViewController") as! FilterViewController
+        return controller
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        selectCountryButton.titleLabel?.textAlignment = .center
 
-        // Do any additional setup after loading the view.
-        countryPicker.delegate = self
-        countryPicker.dataSource = self
-        countryPicker.isHidden = true
+    }
+    
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        let alertController = UIAlertController(title: "Are you sure?", message: "Changes will be unsaved", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Yes", style: .destructive) { (action) in
+            self.dismiss(animated: true, completion: nil)
+        }
+        let noAction = UIAlertAction(title: "No", style: .cancel) { (action) in
+            
+        }
+        alertController.addAction(okAction)
+        alertController.addAction(noAction)
+        
+        present(alertController, animated: true, completion: nil)
         
     }
     
-
+    
+    @IBAction func saveButtonTapped(_ sender: Any) {
+        
+        dismiss(animated: true, completion: nil)
+        
+    }
+    
+    
     /*
     // MARK: - Navigation
 
@@ -37,25 +65,25 @@ class FilterViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     }
     */
     func getCountries() {
-        //to do func
-    }
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return countries.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return countries[row]
+        //to do func to get countries from api
     }
     
     @IBAction func selectCountryPressed(_ sender: Any) {
-        
-        countryPicker.isHidden = false
-        
+        let pickerController = PickerViewController.instantiate(with: countries, delegate: self, preselectedElement: selectedCountry)
+        present(pickerController, animated: true, completion: nil)
     }
     
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        //to do numpad keyboard apear
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+        // to do hide numpad heyboard
+    }
+    
+    //MARK: - PickerViewControllerDelegate
+    func didSelectOption(option: String) {
+        selectCountryButton.titleLabel?.text = option
+        selectedCountry = option
+    }
 }

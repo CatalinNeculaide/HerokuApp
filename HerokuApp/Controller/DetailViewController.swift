@@ -17,12 +17,20 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var starButton: UIBarButtonItem!
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
     }
     
+    
+    static func instantiate() -> DetailViewController {
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+        return controller
+        
+    }
 
     @IBAction func starPressed(_ sender: Any) {
         
@@ -37,5 +45,10 @@ class DetailViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    @IBAction func sportsButtonTapped(_ sender: Any) {
+        
+        dismiss(animated: true, completion: nil)
+        
+    }
+    
 }

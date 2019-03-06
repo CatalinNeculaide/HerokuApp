@@ -19,6 +19,11 @@
 		A4DA2450222E5B9A00D07C42 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA244F222E5B9A00D07C42 /* APIManager.swift */; };
 		A4DA2454222E68DA00D07C42 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA2452222E68DA00D07C42 /* CustomCell.swift */; };
 		A4DA2455222E68DA00D07C42 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4DA2453222E68DA00D07C42 /* TableViewCell.xib */; };
+		A4DA2458222F08F400D07C42 /* Ab4Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA2457222F08F400D07C42 /* Ab4Error.swift */; };
+		A4FD448122303F0800A2EA2E /* KitingSpot+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FD447F22303F0800A2EA2E /* KitingSpot+CoreDataClass.swift */; };
+		A4FD448222303F0800A2EA2E /* KitingSpot+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FD448022303F0800A2EA2E /* KitingSpot+CoreDataProperties.swift */; };
+		A4FD8B54222F1970001A2DF0 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FD8B53222F1970001A2DF0 /* CoreDataManager.swift */; };
+		A4FD8B56222F2464001A2DF0 /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FD8B55222F2464001A2DF0 /* PickerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +42,11 @@
 		A4DA244F222E5B9A00D07C42 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		A4DA2452222E68DA00D07C42 /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		A4DA2453222E68DA00D07C42 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
+		A4DA2457222F08F400D07C42 /* Ab4Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ab4Error.swift; sourceTree = "<group>"; };
+		A4FD447F22303F0800A2EA2E /* KitingSpot+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KitingSpot+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A4FD448022303F0800A2EA2E /* KitingSpot+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KitingSpot+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A4FD8B53222F1970001A2DF0 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		A4FD8B55222F2464001A2DF0 /* PickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
 		E21714AB5D115212DCC91529 /* Pods-HerokuApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HerokuApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-HerokuApp/Pods-HerokuApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -82,8 +92,11 @@
 		A4143D59222DB6EF00BD1EE1 /* HerokuApp */ = {
 			isa = PBXGroup;
 			children = (
+				A4FD8B52222F1960001A2DF0 /* Managers */,
+				A4DA2459222F098500D07C42 /* Extensions */,
+				A4DA2456222E930D00D07C42 /* Storyboards */,
 				A4143D70222DB85B00BD1EE1 /* Model */,
-				A4143D6F222DB84600BD1EE1 /* View */,
+				A4143D6F222DB84600BD1EE1 /* Views */,
 				A4143D71222DB86D00BD1EE1 /* Controller */,
 				A4143D64222DB6F000BD1EE1 /* Assets.xcassets */,
 				A4143D69222DB6F000BD1EE1 /* Info.plist */,
@@ -91,20 +104,21 @@
 			path = HerokuApp;
 			sourceTree = "<group>";
 		};
-		A4143D6F222DB84600BD1EE1 /* View */ = {
+		A4143D6F222DB84600BD1EE1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A4143D5E222DB6EF00BD1EE1 /* Main.storyboard */,
-				A4143D66222DB6F000BD1EE1 /* LaunchScreen.storyboard */,
 				A4DA2451222E68B500D07C42 /* Custom Cell */,
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		A4143D70222DB85B00BD1EE1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A4FD447F22303F0800A2EA2E /* KitingSpot+CoreDataClass.swift */,
+				A4FD448022303F0800A2EA2E /* KitingSpot+CoreDataProperties.swift */,
 				A4143D61222DB6EF00BD1EE1 /* HerokuApp.xcdatamodeld */,
+				A4DA2457222F08F400D07C42 /* Ab4Error.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -113,10 +127,10 @@
 			isa = PBXGroup;
 			children = (
 				A4143D5A222DB6EF00BD1EE1 /* AppDelegate.swift */,
-				A4DA244F222E5B9A00D07C42 /* APIManager.swift */,
 				A4143D5C222DB6EF00BD1EE1 /* ListViewController.swift */,
 				A4143D72222DC84C00BD1EE1 /* DetailViewController.swift */,
 				A4143D74222DCFEB00BD1EE1 /* FilterViewController.swift */,
+				A4FD8B55222F2464001A2DF0 /* PickerViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -128,6 +142,31 @@
 				A4DA2453222E68DA00D07C42 /* TableViewCell.xib */,
 			);
 			path = "Custom Cell";
+			sourceTree = "<group>";
+		};
+		A4DA2456222E930D00D07C42 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				A4143D5E222DB6EF00BD1EE1 /* Main.storyboard */,
+				A4143D66222DB6F000BD1EE1 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		A4DA2459222F098500D07C42 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A4FD8B52222F1960001A2DF0 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				A4DA244F222E5B9A00D07C42 /* APIManager.swift */,
+				A4FD8B53222F1970001A2DF0 /* CoreDataManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		D8360C52038949B051B351E1 /* Frameworks */ = {
@@ -267,11 +306,16 @@
 			files = (
 				A4DA2450222E5B9A00D07C42 /* APIManager.swift in Sources */,
 				A4143D63222DB6EF00BD1EE1 /* HerokuApp.xcdatamodeld in Sources */,
+				A4DA2458222F08F400D07C42 /* Ab4Error.swift in Sources */,
 				A4143D5D222DB6EF00BD1EE1 /* ListViewController.swift in Sources */,
 				A4143D5B222DB6EF00BD1EE1 /* AppDelegate.swift in Sources */,
+				A4FD448222303F0800A2EA2E /* KitingSpot+CoreDataProperties.swift in Sources */,
 				A4143D73222DC84C00BD1EE1 /* DetailViewController.swift in Sources */,
 				A4DA2454222E68DA00D07C42 /* CustomCell.swift in Sources */,
+				A4FD448122303F0800A2EA2E /* KitingSpot+CoreDataClass.swift in Sources */,
 				A4143D75222DCFEB00BD1EE1 /* FilterViewController.swift in Sources */,
+				A4FD8B54222F1970001A2DF0 /* CoreDataManager.swift in Sources */,
+				A4FD8B56222F2464001A2DF0 /* PickerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
