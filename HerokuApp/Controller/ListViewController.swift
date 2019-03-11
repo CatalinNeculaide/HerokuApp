@@ -7,18 +7,23 @@
 //
 
 import UIKit
+import CoreData
 
 class ListViewController: UITableViewController {
+   
 
     var kitingSpots : [KitingSpot]?
     var filterViewController : FilterViewController?
-    var detailViewController : DetailViewController?
-    
-    let test = ["aaa","bbb","ccc"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         kitingSpots = CoreDataManager.getKitingSpots()
+        
+        APIManager.shared.getAllSpots { (isSuccess, error, kitingSpotsGet) in
+            self.kitingSpots = kitingSpotsGet
+        }
+        
         tableView.reloadData()
     }
 
@@ -36,8 +41,7 @@ class ListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-//        return kitingSpots?.count ?? 0
-        return test.count
+        return kitingSpots?.count ?? 0
         
     }
     
@@ -45,7 +49,7 @@ class ListViewController: UITableViewController {
        
         let cell = tableView.dequeueReusableCell(withIdentifier: "listItemCell", for: indexPath)
         
-        let item = test[indexPath.row]
+        let item = kitingSpots?[indexPath.row].name
         cell.textLabel?.text = item
         
         //to do information cell
@@ -56,13 +60,11 @@ class ListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        detailViewController = DetailViewController.instantiate()
-        self.present(detailViewController!, animated: true, completion: nil)
+        let detailViewController = DetailViewController.instantiate(with: ((kitingSpots?[indexPath.row].spotId)!),isFavorite: (kitingSpots?[indexPath.row].isFavorite)!)
+        self.present(detailViewController, animated: true, completion: nil)
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    
     
 }
 

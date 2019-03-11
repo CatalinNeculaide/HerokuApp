@@ -17,4 +17,5 @@ class Ab4Error {
         message = json["message"].string ?? "No message"
         code = json["code"].string ?? "noCode"
     }
+    
 }

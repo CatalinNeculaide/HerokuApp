@@ -16,35 +16,80 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var countryValue: UILabel!
     @IBOutlet weak var starButton: UIBarButtonItem!
     
+    var spotId: String = ""
+    var isStarOn: Bool = false
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        APIManager.shared.getDetailsForSpot(spotID: spotId) { (isSuccess, error, kitingSpot) in
+            
+            self.longitudeValue.text = "\(kitingSpot.longitude)"
+            self.latitudeValue.text = "\(kitingSpot.latitude)"
+            self.windProbabilityValue.text = "\(kitingSpot.windProbability)"
+            self.countryValue.text = kitingSpot.country
+            
+        }
+        
+        setImageToStarButton()
 
     }
     
     
-    static func instantiate() -> DetailViewController {
+    static func instantiate(with spotID: String, isFavorite: Bool) -> DetailViewController {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+        
+        controller.spotId = spotID
+        controller.isStarOn = isFavorite
         return controller
         
     }
 
     @IBAction func starPressed(_ sender: Any) {
         
+        if isStarOn == false {
+            
+            APIManager.shared.addSpotToFavorites(spotID: spotId) { (isSuccess, error, spot) in
+                
+                if isSuccess == true && spot == self.spotId {
+                    
+                    self.setImageToStarButton()
+                    
+                }
+                else {
+                    print(error!)
+                }
+                
+            }
+            
+        } else {
+            
+            APIManager.shared.removeSpotFromFavorites(spotID: spotId) { (isSuccess, error, spot) in
+                
+                if isSuccess == true && spot == self.spotId{
+                    
+                    self.setImageToStarButton()
+                    
+                }
+                else {
+                    print(error!)
+                }
+            }
+        }
         
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    
+    func setImageToStarButton() {
+        
+        starButton.image = isStarOn == true ? UIImage(named: "star-on") : UIImage(named: "star-off")
+        
     }
-    */
+  
     @IBAction func sportsButtonTapped(_ sender: Any) {
         
         dismiss(animated: true, completion: nil)

@@ -46,6 +46,7 @@ class APIManager {
         if json["error"]["message"].string != nil {
             let error = Ab4Error(with: json["error"])
             //Show error
+            print("Error code: \(error.code) with message: \(error.message)")
         }
         
     }
