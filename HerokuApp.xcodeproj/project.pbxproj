@@ -19,7 +19,7 @@
 		A42D19F52237F7A100282BDE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42D19F42237F7A100282BDE /* UIColor.swift */; };
 		A4DA2450222E5B9A00D07C42 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA244F222E5B9A00D07C42 /* APIManager.swift */; };
 		A4DA2454222E68DA00D07C42 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA2452222E68DA00D07C42 /* CustomCell.swift */; };
-		A4DA2455222E68DA00D07C42 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4DA2453222E68DA00D07C42 /* TableViewCell.xib */; };
+		A4DA2455222E68DA00D07C42 /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4DA2453222E68DA00D07C42 /* CustomTableViewCell.xib */; };
 		A4DA2458222F08F400D07C42 /* Ab4Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA2457222F08F400D07C42 /* Ab4Error.swift */; };
 		A4FD448122303F0800A2EA2E /* KitingSpot+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FD447F22303F0800A2EA2E /* KitingSpot+CoreDataClass.swift */; };
 		A4FD448222303F0800A2EA2E /* KitingSpot+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FD448022303F0800A2EA2E /* KitingSpot+CoreDataProperties.swift */; };
@@ -43,7 +43,7 @@
 		A42D19F42237F7A100282BDE /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		A4DA244F222E5B9A00D07C42 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		A4DA2452222E68DA00D07C42 /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
-		A4DA2453222E68DA00D07C42 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
+		A4DA2453222E68DA00D07C42 /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		A4DA2457222F08F400D07C42 /* Ab4Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ab4Error.swift; sourceTree = "<group>"; };
 		A4FD447F22303F0800A2EA2E /* KitingSpot+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KitingSpot+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A4FD448022303F0800A2EA2E /* KitingSpot+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KitingSpot+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -141,7 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				A4DA2452222E68DA00D07C42 /* CustomCell.swift */,
-				A4DA2453222E68DA00D07C42 /* TableViewCell.xib */,
+				A4DA2453222E68DA00D07C42 /* CustomTableViewCell.xib */,
 			);
 			path = "Custom Cell";
 			sourceTree = "<group>";
@@ -241,7 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4143D68222DB6F000BD1EE1 /* LaunchScreen.storyboard in Resources */,
-				A4DA2455222E68DA00D07C42 /* TableViewCell.xib in Resources */,
+				A4DA2455222E68DA00D07C42 /* CustomTableViewCell.xib in Resources */,
 				A4143D65222DB6F000BD1EE1 /* Assets.xcassets in Resources */,
 				A4143D60222DB6EF00BD1EE1 /* Main.storyboard in Resources */,
 			);

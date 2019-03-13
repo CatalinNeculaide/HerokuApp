@@ -11,10 +11,9 @@ import UIKit
 class CustomCell: UITableViewCell {
     
     
-    @IBOutlet weak var isFavorite: UIImageView!
+    @IBOutlet weak var isFavoriteImage: UIImageView!
     @IBOutlet weak var cityName: UILabel!
     @IBOutlet weak var countryName: UILabel!
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()

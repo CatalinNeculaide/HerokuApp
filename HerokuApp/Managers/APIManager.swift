@@ -111,7 +111,6 @@ class APIManager {
                         kitingSpot.configureWithJson(json: kitingSpotJson)
                         kitingSpots.append(kitingSpot)
                     }
-                    CoreDataManager.saveMainContext()
                     completionHandler(dataResponse.result.isSuccess, dataResponse.result.error,kitingSpots)
                 }
             } else {

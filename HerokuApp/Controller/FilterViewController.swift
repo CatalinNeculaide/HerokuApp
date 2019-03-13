@@ -9,7 +9,7 @@
 import UIKit
 
 protocol FilterViewControllerDelegate: AnyObject {
-    func getFilteredSpots(country: String?, windProbabilty: Int?)
+    func getFilteredSpots(kitingSpotsFiltered: [KitingSpot])
     func cancelButtonTapped()
 }
 
@@ -90,9 +90,30 @@ class FilterViewController: UIViewController, UITextFieldDelegate, PickerViewCon
 
     @IBAction func saveButtonTapped(_ sender: Any) {
         
-        let windProbability = Int(changeWindProbTextField.text!)
+        var filteredKitingSpots: [KitingSpot] = []
         
-        delegate?.getFilteredSpots(country: selectedCountry, windProbabilty: windProbability)
+        var windProbability: Int?
+        
+        if let textFieldValue = changeWindProbTextField.text {
+            
+             windProbability = Int(textFieldValue)
+            
+        }
+        
+        APIManager.shared.getAllSpots(country: selectedCountry, windProbability: windProbability) { (isSuccess, error, KitingSpotsFiltered) in
+            if isSuccess {
+                // to do fetched requests
+                for kitingSpot in KitingSpotsFiltered {
+                    filteredKitingSpots.append(kitingSpot)
+                }
+            } else {
+                // to do nspredicate to filter coredata
+                print(error!)
+                
+            }
+        }
+        
+        delegate?.getFilteredSpots(kitingSpotsFiltered: filteredKitingSpots)
         
         dismiss(animated: true, completion: nil)
         

@@ -51,4 +51,9 @@ class CoreDataManager {
             fatalError("Failed to fetch KitingSpot with id: \(id). Error: \(error)")
         }
     }
+    
+    class public func getFilteredSpots(country: String? = nil, windProbability: Int? = nil) {
+        
+        
+    }
 }

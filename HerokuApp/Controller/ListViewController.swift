@@ -10,15 +10,21 @@ import UIKit
 
 class ListViewController: UITableViewController, FilterViewControllerDelegate {
     
-    
-    
    
     var kitingSpots : [KitingSpot] = []
     var filterViewController : FilterViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(CustomCell.self, forCellReuseIdentifier: "CustomCell")
+
+        
+        tableView.register(UINib(nibName: "CustomTableViewCell", bundle: nil), forCellReuseIdentifier: "customCell")
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: .valueChanged)
+        refreshControl.tintColor = UIColor.defaultBlue
+        
+        tableView.refreshControl = refreshControl
         
         kitingSpots = CoreDataManager.getKitingSpots() ?? []
         tableView.reloadData()
@@ -36,6 +42,12 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate {
         }
 
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        tableView.reloadData()
+    }
 
     @IBAction func filterButtonTapped(_ sender: Any) {
         
@@ -50,6 +62,7 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate {
     }
     
     func getAllSpots(){
+        
         APIManager.shared.getAllSpots { (isSuccess, error, kitingSpotsGet) in
             if isSuccess == true {
                 var apiKitingSpots = [KitingSpot]()
@@ -57,11 +70,13 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate {
                     apiKitingSpots.append(kitingSpot)
                 }
                 self.kitingSpots = apiKitingSpots
+                CoreDataManager.saveMainContext()
                 self.tableView.reloadData()
             } else {
                 print(error!)
             }
         }
+        
     }
     // MARK - Tableview
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -72,12 +87,19 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as! CustomCell
         
-        let item = kitingSpots[indexPath.row].name
-        cell.textLabel?.text = item
+        let item: KitingSpot = kitingSpots[indexPath.row]
         
-        //to do information cell
+        cell.cityName.text = item.name
+        cell.countryName.text = item.country
+        
+        if item.isFavorite {
+            cell.isFavoriteImage.isHidden = false
+            cell.isFavoriteImage.image = UIImage(named: "star-on")
+        } else {
+            cell.isFavoriteImage.isHidden = true
+        }
         
         return cell
         
@@ -93,15 +115,23 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate {
     }
     
     //MARK - get Filter Options
-    func getFilteredSpots(country: String?, windProbabilty: Int?) {
+    func getFilteredSpots(kitingSpotsFiltered: [KitingSpot]) {
         
-        APIManager.shared.getAllSpots(country: country, windProbability: windProbabilty) { (isSuccess, error, filteredKitingSpots) in
-            //to do
-        }
+        //to do show filtered results
+        
     }
     
     func cancelButtonTapped() {
         //Handle cancel
     }
+    
+    @objc func handleRefresh (_ refreshControl: UIRefreshControl) {
+    
+        getAllSpots()
+        tableView.reloadData()
+        refreshControl.endRefreshing()
+    
+    }
+    
 }
 

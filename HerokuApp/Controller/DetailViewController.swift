@@ -105,6 +105,7 @@ class DetailViewController: UIViewController {
   
     @IBAction func sportsButtonTapped(_ sender: Any) {
         
+        
         dismiss(animated: true, completion: nil)
         
     }
