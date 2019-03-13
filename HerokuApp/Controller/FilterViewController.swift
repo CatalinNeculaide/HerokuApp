@@ -9,7 +9,7 @@
 import UIKit
 
 protocol FilterViewControllerDelegate: AnyObject {
-    func getFilteredSpots(kitingSpotsFiltered: [KitingSpot])
+    func getFilteredSpots(country: String?, windProbability: Double?)
     func cancelButtonTapped()
 }
 
@@ -21,9 +21,9 @@ class FilterViewController: UIViewController, UITextFieldDelegate, PickerViewCon
     @IBOutlet weak var selectCountryButton: UIButton!
     
     
-    weak var savedState : FilterViewController?
     var countries: [String] = []
     var selectedCountry: String?
+    var selectedWindProbability : Double?
     weak var delegate: FilterViewControllerDelegate?
     
     
@@ -63,7 +63,7 @@ class FilterViewController: UIViewController, UITextFieldDelegate, PickerViewCon
             } else {
                 print(error!)
                 
-                self.selectCountryButton.titleLabel?.text = "Error loading countries. Retry."
+                self.selectCountryButton.setTitle("Couldn't load countries. Retry.", for: .normal)
                 self.selectCountryButton.setTitleColor(UIColor.red, for: .normal)
                 self.selectCountryButton.isEnabled = true
             }
@@ -90,30 +90,16 @@ class FilterViewController: UIViewController, UITextFieldDelegate, PickerViewCon
 
     @IBAction func saveButtonTapped(_ sender: Any) {
         
-        var filteredKitingSpots: [KitingSpot] = []
-        
-        var windProbability: Int?
+        var windProbability: Double?
         
         if let textFieldValue = changeWindProbTextField.text {
             
-             windProbability = Int(textFieldValue)
+             windProbability = Double(textFieldValue)
             
         }
         
-        APIManager.shared.getAllSpots(country: selectedCountry, windProbability: windProbability) { (isSuccess, error, KitingSpotsFiltered) in
-            if isSuccess {
-                // to do fetched requests
-                for kitingSpot in KitingSpotsFiltered {
-                    filteredKitingSpots.append(kitingSpot)
-                }
-            } else {
-                // to do nspredicate to filter coredata
-                print(error!)
-                
-            }
-        }
-        
-        delegate?.getFilteredSpots(kitingSpotsFiltered: filteredKitingSpots)
+        self.selectedWindProbability = windProbability
+        delegate?.getFilteredSpots(country: selectedCountry, windProbability: windProbability)
         
         dismiss(animated: true, completion: nil)
         

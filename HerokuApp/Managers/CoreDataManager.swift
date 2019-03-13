@@ -43,6 +43,7 @@ class CoreDataManager {
     class public func getKitingSpot(id: String) -> KitingSpot? {
        
         let spotFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "KitingSpot")
+        spotFetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         spotFetchRequest.predicate = NSPredicate(format: "spotId = %@", id)
         do {
             let fetchedSpots = try CoreDataManager.mainViewContext.fetch(spotFetchRequest) as! [KitingSpot]
@@ -52,8 +53,26 @@ class CoreDataManager {
         }
     }
     
-    class public func getFilteredSpots(country: String? = nil, windProbability: Int? = nil) {
+    class public func getFilteredSpots(country: String? = nil, windProbability: Double? = nil) -> [KitingSpot] {
         
+        var fetchedSpots: [KitingSpot] = []
+        let spotFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "KitingSpot")
+        spotFetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         
+        if (country != nil) && (windProbability != nil) {
+            spotFetchRequest.predicate = NSPredicate(format: "country == %@ && windProbability == %@", country!, windProbability!)
+        } else if country == nil && windProbability != nil {
+            spotFetchRequest.predicate = NSPredicate(format: "windProbability == %@", windProbability!)
+        } else if country != nil && windProbability == nil {
+            spotFetchRequest.predicate = NSPredicate(format: "country == %@", country!)
+        }
+        
+        do {
+            fetchedSpots = try CoreDataManager.mainViewContext.fetch(spotFetchRequest) as! [KitingSpot]
+        } catch {
+            fatalError("Failed to fetch filtered kitingSpots. Error: \(error)")
+        }
+        
+        return fetchedSpots
     }
 }

@@ -166,7 +166,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yXH-Lt-ltR">
+                            <navigationBar contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yXH-Lt-ltR">
                                 <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                                 <items>
                                     <navigationItem title="Filters" id="qUa-7i-vyF">
@@ -229,21 +229,31 @@
                                 <rect key="frame" x="177.66666666666666" y="325" width="20" height="20"/>
                                 <color key="color" red="0.14066989539999999" green="0.56725360280000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qfw-YR-4gl">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="tea-QH-UDm"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="0hQ-mK-cC0" firstAttribute="leading" secondItem="JPQ-VP-CNo" secondAttribute="leading" constant="10" id="0Zv-qz-3t9"/>
                             <constraint firstItem="0hQ-mK-cC0" firstAttribute="top" secondItem="JPQ-VP-CNo" secondAttribute="top" constant="51" id="0v1-WH-75m"/>
+                            <constraint firstItem="JPQ-VP-CNo" firstAttribute="trailing" secondItem="qfw-YR-4gl" secondAttribute="trailing" id="8gC-d5-SmJ"/>
                             <constraint firstItem="uLb-l2-X2G" firstAttribute="top" secondItem="vmA-7Z-T2Y" secondAttribute="bottom" constant="12" id="BXQ-3j-nHR"/>
                             <constraint firstItem="JPQ-VP-CNo" firstAttribute="trailing" secondItem="yXH-Lt-ltR" secondAttribute="trailing" id="C2U-NX-ym2"/>
                             <constraint firstItem="pkV-AD-JfL" firstAttribute="centerX" secondItem="P1u-bX-Yh9" secondAttribute="centerX" id="EkM-Io-a3l"/>
                             <constraint firstItem="yXH-Lt-ltR" firstAttribute="leading" secondItem="P1u-bX-Yh9" secondAttribute="leading" id="IwO-Up-nBJ"/>
+                            <constraint firstItem="qfw-YR-4gl" firstAttribute="leading" secondItem="P1u-bX-Yh9" secondAttribute="leading" id="Jg8-05-bh8"/>
                             <constraint firstItem="DId-88-tJC" firstAttribute="leading" secondItem="JPQ-VP-CNo" secondAttribute="leading" constant="12" id="Pdj-Dr-o63"/>
                             <constraint firstItem="JPQ-VP-CNo" firstAttribute="trailing" secondItem="vmA-7Z-T2Y" secondAttribute="trailing" constant="236" id="RXj-ie-jZ4"/>
                             <constraint firstItem="DId-88-tJC" firstAttribute="top" secondItem="0hQ-mK-cC0" secondAttribute="bottom" constant="14" id="STD-ti-Zw2"/>
                             <constraint firstItem="JPQ-VP-CNo" firstAttribute="trailing" secondItem="uLb-l2-X2G" secondAttribute="trailing" id="YMF-62-tOv"/>
                             <constraint firstItem="pkV-AD-JfL" firstAttribute="top" secondItem="uLb-l2-X2G" secondAttribute="bottom" constant="8" id="ZjC-68-K4j"/>
                             <constraint firstItem="vmA-7Z-T2Y" firstAttribute="top" secondItem="DId-88-tJC" secondAttribute="bottom" constant="27" id="aVg-M3-qYo"/>
+                            <constraint firstItem="qfw-YR-4gl" firstAttribute="top" secondItem="P1u-bX-Yh9" secondAttribute="top" id="eIl-Zu-u7B"/>
                             <constraint firstItem="JPQ-VP-CNo" firstAttribute="trailing" secondItem="0hQ-mK-cC0" secondAttribute="trailing" constant="119" id="glc-gO-jee"/>
                             <constraint firstItem="yXH-Lt-ltR" firstAttribute="top" secondItem="JPQ-VP-CNo" secondAttribute="top" id="h28-6T-7Tu"/>
                             <constraint firstItem="vmA-7Z-T2Y" firstAttribute="leading" secondItem="JPQ-VP-CNo" secondAttribute="leading" constant="10" id="igr-3b-TLp"/>
@@ -330,6 +340,7 @@
         <scene sceneID="wmS-sb-IPw">
             <objects>
                 <navigationController id="oHe-Cf-j2g" sceneMemberID="viewController">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="kXE-xH-M9s">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

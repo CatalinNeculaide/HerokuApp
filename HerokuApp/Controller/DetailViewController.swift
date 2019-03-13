@@ -33,10 +33,14 @@ class DetailViewController: UIViewController {
         
         detailsActivityIndicator.startAnimating()
         APIManager.shared.getDetailsForSpot(spotID: localKitingSpot.spotId) { (isSuccess, error, kitingSpot) in
-            self.detailsActivityIndicator.stopAnimating()
-            self.localKitingSpot = kitingSpot
-            CoreDataManager.saveMainContext()
-            self.configure()
+            
+            if isSuccess {
+                self.detailsActivityIndicator.stopAnimating()
+                self.localKitingSpot = kitingSpot
+                CoreDataManager.saveMainContext()
+                self.configure()
+            }
+            
         }
     }
     

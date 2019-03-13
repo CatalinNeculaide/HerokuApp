@@ -39,6 +39,7 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate {
             }
         } else {
             getAllSpots()
+            tableView.reloadData()
         }
 
     }
@@ -61,11 +62,12 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate {
         
     }
     
-    func getAllSpots(){
+    func getAllSpots(country: String? = nil, windProbability: Double? = nil) {
         
-        APIManager.shared.getAllSpots { (isSuccess, error, kitingSpotsGet) in
+        var apiKitingSpots = [KitingSpot]()
+        
+        APIManager.shared.getAllSpots(country: country, windProbability: windProbability) { (isSuccess, error, kitingSpotsGet) in
             if isSuccess == true {
-                var apiKitingSpots = [KitingSpot]()
                 for kitingSpot in kitingSpotsGet {
                     apiKitingSpots.append(kitingSpot)
                 }
@@ -74,6 +76,10 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate {
                 self.tableView.reloadData()
             } else {
                 print(error!)
+                apiKitingSpots = CoreDataManager.getFilteredSpots(country: country, windProbability: windProbability)
+                self.kitingSpots = apiKitingSpots
+                CoreDataManager.saveMainContext()
+                self.tableView.reloadData()
             }
         }
         
@@ -115,11 +121,14 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate {
     }
     
     //MARK - get Filter Options
-    func getFilteredSpots(kitingSpotsFiltered: [KitingSpot]) {
+    
+    func getFilteredSpots(country: String?, windProbability: Double?) {
         
-        //to do show filtered results
+        getAllSpots(country: country, windProbability: windProbability)
+        tableView.reloadData()
         
     }
+    
     
     func cancelButtonTapped() {
         //Handle cancel
@@ -127,7 +136,7 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate {
     
     @objc func handleRefresh (_ refreshControl: UIRefreshControl) {
     
-        getAllSpots()
+        getAllSpots(country: filterViewController?.selectedCountry, windProbability: filterViewController?.selectedWindProbability)
         tableView.reloadData()
         refreshControl.endRefreshing()
     

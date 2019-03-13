@@ -75,13 +75,14 @@ class APIManager {
                 completionHandler(dataResponse.result.isSuccess, dataResponse.result.error)
             } else {
                 print(dataResponse.result.error!)
+                APIManager.handleApiError(from: JSON(dataResponse.result.value!))
             }
 
         }
     }
 
     
-    func getAllSpots(country: String? = nil, windProbability: Int? = nil, completionHandler: @escaping (Bool, Error?, [KitingSpot]) -> Void) {
+    func getAllSpots(country: String? = nil, windProbability: Double? = nil, completionHandler: @escaping (Bool, Error?, [KitingSpot]) -> Void) {
         var parameters: Parameters = [:]
         
         if let country = country {
@@ -94,6 +95,8 @@ class APIManager {
         
         Alamofire.request(getEndPoint(endpoint: .getAll), method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: APIManager.headers).responseJSON { (dataResponse) in
             
+            var kitingSpots = [KitingSpot]()
+            
             if dataResponse.result.isSuccess {
                 let json = JSON(dataResponse.result.value!)
                 APIManager.handleApiError(from: json)
@@ -104,19 +107,18 @@ class APIManager {
                     CoreDataManager.mainViewContext.delete(kitingSpot)
                 }
                 
-                var kitingSpots = [KitingSpot]()
                 if let kitingSpotsJsons = json["result"].array {
                     for kitingSpotJson in kitingSpotsJsons {
                         let kitingSpot = KitingSpot(context: CoreDataManager.mainViewContext)
                         kitingSpot.configureWithJson(json: kitingSpotJson)
                         kitingSpots.append(kitingSpot)
                     }
-                    completionHandler(dataResponse.result.isSuccess, dataResponse.result.error,kitingSpots)
                 }
             } else {
                 print(dataResponse.result.error!)
+                kitingSpots = CoreDataManager.getFilteredSpots(country: country, windProbability: windProbability)
             }
-            
+            completionHandler(dataResponse.result.isSuccess, dataResponse.result.error,kitingSpots)
         }
     }
     
@@ -147,6 +149,9 @@ class APIManager {
                         
             } else {
                 print(dataResponse.result.error!)
+                if let localKitingSpot = CoreDataManager.getKitingSpot(id: spotID) {
+                    completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, localKitingSpot)
+                }
             }
         }
     }
@@ -154,24 +159,25 @@ class APIManager {
     
     func getCountries(completionHandler: @escaping (Bool, Error?, [String]) -> Void) {
         
+        
+        
         Alamofire.request(getEndPoint(endpoint: .getCountry), method: .post, parameters: nil, encoding: JSONEncoding.default, headers: APIManager.headers).responseJSON { (dataResponse) in
+             var countries = [String]()
             if dataResponse.result.isSuccess {
                 let json = JSON(dataResponse.result.value!)
                 APIManager.handleApiError(from: json)
-            
-                var countries = [String]()
+    
             
                 if let countriesJson = json["result"].array {
                     for countryJson in countriesJson {
                         let country = countryJson.string
                         countries.append(country!)
                     }
-                
-                    completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, countries)
                 }
             } else {
                 print(dataResponse.result.error!)
             }
+            completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, countries)
         }
     }
     
@@ -185,16 +191,14 @@ class APIManager {
                 APIManager.handleApiError(from: json)
             
                 if let idSpot = json["result"].string {
-                    if idSpot == spotID {
-                        completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, idSpot)
-                    }
-                    else {
+                    if idSpot != spotID {
                         print("Error, wrong spot added to favorites")
                     }
                 }
             } else {
                 print(dataResponse.result.error!)
             }
+            completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, spotID)
         }
     }
     
@@ -208,16 +212,14 @@ class APIManager {
                 APIManager.handleApiError(from: json)
             
                 if let idSpot = json["result"].string {
-                    if idSpot == spotID {
-                        completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, idSpot)
-                    }
-                    else{
+                    if idSpot != spotID {
                         print("Error, wrong spot removed from favorites")
                     }
                 }
             } else {
                 print(dataResponse.result.error!)
             }
+            completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, spotID)
         }
     }
     
