@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import SwipeCellKit
 
-class ListViewController: UITableViewController, FilterViewControllerDelegate {
-    
+class ListViewController: UITableViewController, FilterViewControllerDelegate, SwipeTableViewCellDelegate {
    
+    
     var kitingSpots : [KitingSpot] = []
     var filterViewController : FilterViewController?
     
@@ -91,9 +92,17 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate {
         
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        
         let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as! CustomCell
+        
+        cell.delegate = self
+        
+        cell.accessoryType = .disclosureIndicator
         
         let item: KitingSpot = kitingSpots[indexPath.row]
         
@@ -119,6 +128,47 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate {
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        
+        var favorites: SwipeAction
+        
+        guard orientation == .right else { return nil }
+        
+        if kitingSpots[indexPath.row].isFavorite == false {
+            favorites = SwipeAction(style: .default, title: "Add") { (action, indexPath) in
+                action.transitionDelegate = ScaleTransition.default
+                self.kitingSpots[indexPath.row].setValue(true, forKey: "isFavorite")
+                
+                APIManager.shared.addSpotToFavorites(spotID: self.kitingSpots[indexPath.row].spotId, completionHandler: { (isSuccess, error, spotID) in
+                    if isSuccess == false {
+                        print(error!)
+                    }
+                })
+                self.tableView.reloadData()
+                
+            }
+            favorites.backgroundColor = UIColor.defaultBlue
+        } else {
+            favorites = SwipeAction(style: .default, title: "Remove") { (action, indexPath) in
+                action.transitionDelegate = ScaleTransition.default
+                self.kitingSpots[indexPath.row].setValue(false, forKey: "isFavorite")
+                
+                APIManager.shared.removeSpotFromFavorites(spotID: self.kitingSpots[indexPath.row].spotId, completionHandler: { (isSuccess, error, spotId) in
+                    if isSuccess == false {
+                        print(error!)
+                    }
+                })
+                
+                self.tableView.reloadData()
+            }
+            favorites.backgroundColor = UIColor.red
+        }
+        
+        return [favorites]
+    }
+    
+    
     
     //MARK - get Filter Options
     

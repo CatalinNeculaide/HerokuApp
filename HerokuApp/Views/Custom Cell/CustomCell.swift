@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SwipeCellKit
 
-class CustomCell: UITableViewCell {
+class CustomCell: SwipeTableViewCell {
     
     
     @IBOutlet weak var isFavoriteImage: UIImageView!
