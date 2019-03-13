@@ -34,6 +34,7 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        pickerView.reloadAllComponents()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,16 +62,6 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         
     }
     
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     @IBAction func selectButtonPressed(_ sender: Any) {
         
@@ -79,6 +70,7 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         
     }
     @IBAction func cancelButtonPressed(_ sender: Any) {
+        
         
         dismiss(animated: true, completion: nil)
     }

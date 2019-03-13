@@ -8,14 +8,23 @@
 
 import UIKit
 
+protocol FilterViewControllerDelegate: AnyObject {
+    func getFilteredSpots(country: String?, windProbabilty: Int?)
+    func cancelButtonTapped()
+}
+
 class FilterViewController: UIViewController, UITextFieldDelegate, PickerViewControllerDelegate {
     
     
-    var countries: [String] = ["Romania","Italia"]
-    var selectedCountry = "None"
-    
-    
+    @IBOutlet weak var countriesActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var changeWindProbTextField: UITextField!
     @IBOutlet weak var selectCountryButton: UIButton!
+    
+    
+    weak var savedState : FilterViewController?
+    var countries: [String] = []
+    var selectedCountry: String?
+    weak var delegate: FilterViewControllerDelegate?
     
     
     static func instantiate() -> FilterViewController {
@@ -28,62 +37,86 @@ class FilterViewController: UIViewController, UITextFieldDelegate, PickerViewCon
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        getCountries()
+        
         selectCountryButton.titleLabel?.textAlignment = .center
+    }
+    
+    func getCountries() {
+        selectCountryButton.setTitle("Loading countries....", for: .normal)
+        selectCountryButton.isEnabled = false
+        countriesActivityIndicator.hidesWhenStopped = true
+        countriesActivityIndicator.startAnimating()
+        self.selectCountryButton.setTitleColor(UIColor.defaultBlue, for: .normal)
 
+        APIManager.shared.getCountries { (isSuccess, error, countriesGet) in
+            self.countriesActivityIndicator.stopAnimating()
+            
+            if isSuccess {
+                for country in countriesGet {
+                    self.countries.append(country)
+                }
+                
+                self.selectCountryButton.setTitle("Select Country", for: .normal)
+                self.selectCountryButton.isEnabled = true
+                
+            } else {
+                print(error!)
+                
+                self.selectCountryButton.titleLabel?.text = "Error loading countries. Retry."
+                self.selectCountryButton.setTitleColor(UIColor.red, for: .normal)
+                self.selectCountryButton.isEnabled = true
+            }
+        }
     }
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
+        
         let alertController = UIAlertController(title: "Are you sure?", message: "Changes will be unsaved", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Yes", style: .destructive) { (action) in
+            self.delegate?.cancelButtonTapped()
             self.dismiss(animated: true, completion: nil)
         }
         let noAction = UIAlertAction(title: "No", style: .cancel) { (action) in
-            
         }
         alertController.addAction(okAction)
         alertController.addAction(noAction)
+        
         
         present(alertController, animated: true, completion: nil)
         
     }
     
-    
+
     @IBAction func saveButtonTapped(_ sender: Any) {
+        
+        let windProbability = Int(changeWindProbTextField.text!)
+        
+        delegate?.getFilteredSpots(country: selectedCountry, windProbabilty: windProbability)
         
         dismiss(animated: true, completion: nil)
         
     }
     
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    func getCountries() {
-        //to do func to get countries from api
-    }
-    
     @IBAction func selectCountryPressed(_ sender: Any) {
-        let pickerController = PickerViewController.instantiate(with: countries, delegate: self, preselectedElement: selectedCountry)
-        present(pickerController, animated: true, completion: nil)
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        //to do numpad keyboard apear
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-        // to do hide numpad heyboard
+        if countries.count == 0 {
+            getCountries()
+        } else {
+            let pickerController = PickerViewController.instantiate(with: countries, delegate: self, preselectedElement: selectedCountry)
+            present(pickerController, animated: true, completion: nil)
+        }
     }
     
     //MARK: - PickerViewControllerDelegate
     func didSelectOption(option: String) {
-        selectCountryButton.titleLabel?.text = option
+        guard option != "None" else {
+            selectCountryButton.setTitle("Select Country", for: .normal)
+            selectedCountry = nil
+            return
+        }
+        
+        selectCountryButton.setTitle(option, for: .normal)
         selectedCountry = option
+        
     }
 }

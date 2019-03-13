@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class DetailViewController: UIViewController {
     
@@ -15,64 +16,74 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var windProbabilityValue: UILabel!
     @IBOutlet weak var countryValue: UILabel!
     @IBOutlet weak var starButton: UIBarButtonItem!
+    @IBOutlet weak var titleName: UINavigationItem!
+    @IBOutlet weak var detailsActivityIndicator: UIActivityIndicatorView!
     
-    var spotId: String = ""
-    var isStarOn: Bool = false
-    
-    
+    var localKitingSpot : KitingSpot = KitingSpot()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        APIManager.shared.getDetailsForSpot(spotID: spotId) { (isSuccess, error, kitingSpot) in
-            
-            self.longitudeValue.text = "\(kitingSpot.longitude)"
-            self.latitudeValue.text = "\(kitingSpot.latitude)"
-            self.windProbabilityValue.text = "\(kitingSpot.windProbability)"
-            self.countryValue.text = kitingSpot.country
-            
-        }
-        
-        setImageToStarButton()
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configure()
+        
+        detailsActivityIndicator.startAnimating()
+        APIManager.shared.getDetailsForSpot(spotID: localKitingSpot.spotId) { (isSuccess, error, kitingSpot) in
+            self.detailsActivityIndicator.stopAnimating()
+            self.localKitingSpot = kitingSpot
+            CoreDataManager.saveMainContext()
+            self.configure()
+        }
+    }
     
-    static func instantiate(with spotID: String, isFavorite: Bool) -> DetailViewController {
+    func configure(){
+        title = localKitingSpot.name
+        countryValue.text = localKitingSpot.country
+        latitudeValue.text = "\(localKitingSpot.latitude)"
+        longitudeValue.text = "\(localKitingSpot.longitude)"
+        windProbabilityValue.text = "\(localKitingSpot.windProbability)%"
+        setImageToStarButton()
+    }
+    
+    static func instantiate(with kitingSpot: KitingSpot) -> DetailViewController {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
         
-        controller.spotId = spotID
-        controller.isStarOn = isFavorite
+        controller.localKitingSpot = kitingSpot
         return controller
         
     }
 
     @IBAction func starPressed(_ sender: Any) {
         
-        if isStarOn == false {
+        
+        if localKitingSpot.isFavorite == false {
             
-            APIManager.shared.addSpotToFavorites(spotID: spotId) { (isSuccess, error, spot) in
-                
-                if isSuccess == true && spot == self.spotId {
-                    
-                    self.setImageToStarButton()
-                    
+            self.localKitingSpot.setValue(true, forKey: "isFavorite")
+            self.setImageToStarButton()
+            APIManager.shared.addSpotToFavorites(spotID: localKitingSpot.spotId) { (isSuccess, error, spot) in
+                if isSuccess == true  {
                 }
                 else {
+                    
+                    self.localKitingSpot.setValue(false, forKey: "isFavorite")
                     print(error!)
                 }
                 
             }
             
         } else {
-            
-            APIManager.shared.removeSpotFromFavorites(spotID: spotId) { (isSuccess, error, spot) in
+            self.localKitingSpot.setValue(false, forKey: "isFavorite")
+            self.setImageToStarButton()
+
+            APIManager.shared.removeSpotFromFavorites(spotID: localKitingSpot.spotId) { (isSuccess, error, spot) in
                 
-                if isSuccess == true && spot == self.spotId{
-                    
-                    self.setImageToStarButton()
+                if isSuccess == true{
                     
                 }
                 else {
@@ -81,12 +92,14 @@ class DetailViewController: UIViewController {
             }
         }
         
+        CoreDataManager.saveMainContext()
+        
     }
     
     
     func setImageToStarButton() {
         
-        starButton.image = isStarOn == true ? UIImage(named: "star-on") : UIImage(named: "star-off")
+        starButton.image = localKitingSpot.isFavorite == true ? UIImage(named: "star-on") : UIImage(named: "star-off")
         
     }
   
@@ -94,6 +107,10 @@ class DetailViewController: UIViewController {
         
         dismiss(animated: true, completion: nil)
         
+    }
+    
+    deinit {
+        NSLog("DetailViewController deinit")
     }
     
 }

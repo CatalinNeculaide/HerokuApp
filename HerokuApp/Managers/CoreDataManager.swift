@@ -26,6 +26,8 @@ class CoreDataManager {
     class public func getKitingSpots() -> [KitingSpot]? {
         
         let spotsFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "KitingSpot")
+        spotsFetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        
         do {
             let fetchedSpots = try CoreDataManager.mainViewContext.fetch(spotsFetchRequest) as! [KitingSpot]
             if fetchedSpots.count > 0 {
@@ -36,6 +38,17 @@ class CoreDataManager {
         } catch {
             fatalError("Failed to fetch KitingSpots: \(error)")
         }
-        
+    }
+    
+    class public func getKitingSpot(id: String) -> KitingSpot? {
+       
+        let spotFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "KitingSpot")
+        spotFetchRequest.predicate = NSPredicate(format: "spotId = %@", id)
+        do {
+            let fetchedSpots = try CoreDataManager.mainViewContext.fetch(spotFetchRequest) as! [KitingSpot]
+            return fetchedSpots.first
+        } catch {
+            fatalError("Failed to fetch KitingSpot with id: \(id). Error: \(error)")
+        }
     }
 }

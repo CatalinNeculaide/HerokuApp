@@ -14,7 +14,7 @@ enum EndPoint: String {
     case getUser = "/api-user-get"
     case getAll = "/api-spot-get-all"
     case getDetails = "/api-spot-get-details"
-    case getCountry = "/api-spot-get-country"
+    case getCountry = "/api-spot-get-countries"
     case addFavorites = "/api-spot-favorites-add"
     case removeFavorites = "/api-spot-favorites-remove"
 }
@@ -31,6 +31,9 @@ class APIManager {
         if let token = UserDefaults.standard.string(forKey: "token") {
             headerDict["token"] = token
         }
+        else {
+            
+        }
         return headerDict
     }
     
@@ -46,6 +49,10 @@ class APIManager {
         if json["error"]["message"].string != nil {
             let error = Ab4Error(with: json["error"])
             //Show error
+            let alert = UIAlertController(title: "Oops!", message: "\(error.code) : \(error.message)", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            
+            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
             print("Error code: \(error.code) with message: \(error.message)")
         }
         
@@ -57,14 +64,18 @@ class APIManager {
         
         Alamofire.request(getEndPoint(endpoint: .getUser), method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: APIManager.headers).responseJSON { (dataResponse) in
             
-            let json = JSON(dataResponse.result.value!)
-            APIManager.handleApiError(from: json)
+            if dataResponse.result.isSuccess {
+                let json = JSON(dataResponse.result.value!)
+                APIManager.handleApiError(from: json)
             
-            if let token = json["result"]["token"].string {
+                if let token = json["result"]["token"].string {
                 UserDefaults.standard.set(token, forKey: "token")
-            }
+                }
             
-            completionHandler(dataResponse.result.isSuccess, dataResponse.result.error)
+                completionHandler(dataResponse.result.isSuccess, dataResponse.result.error)
+            } else {
+                print(dataResponse.result.error!)
+            }
 
         }
     }
@@ -83,18 +94,28 @@ class APIManager {
         
         Alamofire.request(getEndPoint(endpoint: .getAll), method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: APIManager.headers).responseJSON { (dataResponse) in
             
-            let json = JSON(dataResponse.result.value!)
-            APIManager.handleApiError(from: json)
-            
-            var kitingSpots = [KitingSpot]()
-            
-            if let kitingSpotsJsons = json["result"].array {
-                for kitingSpotJson in kitingSpotsJsons {
-                    let kitingSpot = KitingSpot(context: CoreDataManager.mainViewContext)
-                    kitingSpot.configureWithJson(json: kitingSpotJson)
-                    kitingSpots.append(kitingSpot)
+            if dataResponse.result.isSuccess {
+                let json = JSON(dataResponse.result.value!)
+                APIManager.handleApiError(from: json)
+                
+                
+                let localKitingSpots = CoreDataManager.getKitingSpots() ?? []
+                for kitingSpot in localKitingSpots {
+                    CoreDataManager.mainViewContext.delete(kitingSpot)
                 }
-                completionHandler(dataResponse.result.isSuccess, dataResponse.result.error,kitingSpots)
+                
+                var kitingSpots = [KitingSpot]()
+                if let kitingSpotsJsons = json["result"].array {
+                    for kitingSpotJson in kitingSpotsJsons {
+                        let kitingSpot = KitingSpot(context: CoreDataManager.mainViewContext)
+                        kitingSpot.configureWithJson(json: kitingSpotJson)
+                        kitingSpots.append(kitingSpot)
+                    }
+                    CoreDataManager.saveMainContext()
+                    completionHandler(dataResponse.result.isSuccess, dataResponse.result.error,kitingSpots)
+                }
+            } else {
+                print(dataResponse.result.error!)
             }
             
         }
@@ -107,37 +128,51 @@ class APIManager {
         
         Alamofire.request(getEndPoint(endpoint: .getDetails), method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: APIManager.headers).responseJSON { (dataResponse) in
             
-            let json = JSON(dataResponse.result.value!)
-            APIManager.handleApiError(from: json)
-            
-            let kitingSpotDetail = KitingSpot()
-            
-            kitingSpotDetail.configureWithJson(json: json["result"])
-            
-            completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, kitingSpotDetail)
-            
+            if dataResponse.result.isSuccess {
+                let json = JSON(dataResponse.result.value!)["result"]
+                APIManager.handleApiError(from: json)
+                guard let spotId = json["id"].string else {
+                    print("No spot id received from API")
+                    return
+                }
+                
+                if let localKitingSpot = CoreDataManager.getKitingSpot(id: spotId) {
+                    localKitingSpot.configureWithJson(json: json)
+                    completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, localKitingSpot)
+                    
+                } else {
+                    let newKitingSpot = KitingSpot(context: CoreDataManager.mainViewContext)
+                    newKitingSpot.configureWithJson(json: json)
+                    completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, newKitingSpot)
+                }
+                        
+            } else {
+                print(dataResponse.result.error!)
             }
         }
+    }
     
     
     func getCountries(completionHandler: @escaping (Bool, Error?, [String]) -> Void) {
         
         Alamofire.request(getEndPoint(endpoint: .getCountry), method: .post, parameters: nil, encoding: JSONEncoding.default, headers: APIManager.headers).responseJSON { (dataResponse) in
+            if dataResponse.result.isSuccess {
+                let json = JSON(dataResponse.result.value!)
+                APIManager.handleApiError(from: json)
             
-            let json = JSON(dataResponse.result.value!)
-            APIManager.handleApiError(from: json)
+                var countries = [String]()
             
-            var countries = [String]()
-            
-            if let countriesJson = json["result"].array {
-                for countryJson in countriesJson {
-                    let country = countryJson.string
-                    countries.append(country!)
-                }
+                if let countriesJson = json["result"].array {
+                    for countryJson in countriesJson {
+                        let country = countryJson.string
+                        countries.append(country!)
+                    }
                 
-                completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, countries)
+                    completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, countries)
+                }
+            } else {
+                print(dataResponse.result.error!)
             }
-            
         }
     }
     
@@ -146,19 +181,21 @@ class APIManager {
         let parameters: [String: String] = ["spotId":spotID]
         
         Alamofire.request(getEndPoint(endpoint: .addFavorites), method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: APIManager.headers).responseJSON { (dataResponse) in
+            if dataResponse.result.isSuccess {
+                let json = JSON(dataResponse.result.value!)
+                APIManager.handleApiError(from: json)
             
-            let json = JSON(dataResponse.result.value!)
-            APIManager.handleApiError(from: json)
-            
-            if let idSpot = json["result"].string {
-                if idSpot == spotID {
-                    completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, idSpot)
+                if let idSpot = json["result"].string {
+                    if idSpot == spotID {
+                        completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, idSpot)
+                    }
+                    else {
+                        print("Error, wrong spot added to favorites")
+                    }
                 }
-                else {
-                    print("Error, wrong spot added to favorites")
-                }
+            } else {
+                print(dataResponse.result.error!)
             }
-            
         }
     }
     
@@ -167,17 +204,20 @@ class APIManager {
         let parameters: [String:String] = ["spotId":spotID]
         
         Alamofire.request(getEndPoint(endpoint: .removeFavorites), method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: APIManager.headers).responseJSON { (dataResponse) in
+            if dataResponse.result.isSuccess {
+                let json = JSON(dataResponse.result.value!)
+                APIManager.handleApiError(from: json)
             
-            let json = JSON(dataResponse.result.value!)
-            APIManager.handleApiError(from: json)
-            
-            if let idSpot = json["result"].string {
-                if idSpot == spotID {
-                    completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, idSpot)
+                if let idSpot = json["result"].string {
+                    if idSpot == spotID {
+                        completionHandler(dataResponse.result.isSuccess, dataResponse.result.error, idSpot)
+                    }
+                    else{
+                        print("Error, wrong spot removed from favorites")
+                    }
                 }
-                else{
-                    print("Error, wrong spot removed from favorites")
-                }
+            } else {
+                print(dataResponse.result.error!)
             }
         }
     }

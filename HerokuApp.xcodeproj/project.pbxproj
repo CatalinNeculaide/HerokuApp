@@ -16,6 +16,7 @@
 		A4143D68222DB6F000BD1EE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4143D66222DB6F000BD1EE1 /* LaunchScreen.storyboard */; };
 		A4143D73222DC84C00BD1EE1 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4143D72222DC84C00BD1EE1 /* DetailViewController.swift */; };
 		A4143D75222DCFEB00BD1EE1 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4143D74222DCFEB00BD1EE1 /* FilterViewController.swift */; };
+		A42D19F52237F7A100282BDE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42D19F42237F7A100282BDE /* UIColor.swift */; };
 		A4DA2450222E5B9A00D07C42 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA244F222E5B9A00D07C42 /* APIManager.swift */; };
 		A4DA2454222E68DA00D07C42 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4DA2452222E68DA00D07C42 /* CustomCell.swift */; };
 		A4DA2455222E68DA00D07C42 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4DA2453222E68DA00D07C42 /* TableViewCell.xib */; };
@@ -39,6 +40,7 @@
 		A4143D69222DB6F000BD1EE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4143D72222DC84C00BD1EE1 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		A4143D74222DCFEB00BD1EE1 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		A42D19F42237F7A100282BDE /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		A4DA244F222E5B9A00D07C42 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		A4DA2452222E68DA00D07C42 /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		A4DA2453222E68DA00D07C42 /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 		A4DA2459222F098500D07C42 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				A42D19F42237F7A100282BDE /* UIColor.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 				A4143D73222DC84C00BD1EE1 /* DetailViewController.swift in Sources */,
 				A4DA2454222E68DA00D07C42 /* CustomCell.swift in Sources */,
 				A4FD448122303F0800A2EA2E /* KitingSpot+CoreDataClass.swift in Sources */,
+				A42D19F52237F7A100282BDE /* UIColor.swift in Sources */,
 				A4143D75222DCFEB00BD1EE1 /* FilterViewController.swift in Sources */,
 				A4FD8B54222F1970001A2DF0 /* CoreDataManager.swift in Sources */,
 				A4FD8B56222F2464001A2DF0 /* PickerViewController.swift in Sources */,

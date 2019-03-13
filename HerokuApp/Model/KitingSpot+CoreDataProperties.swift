@@ -19,24 +19,23 @@ extension KitingSpot {
     }
     
     @nonobjc public func configureWithJson(json : JSON) {
-        self.spotId = json["id"].string
+        self.spotId = json["id"].string!
         self.country = json["country"].string
         self.isFavorite = json["isFavorite"].bool ?? false
         self.name = json["name"].string
         self.whenToGo = json["whenToGo"].string ?? ""
-        self.latitude = json["latitude"].int16 ?? 0
-        self.longitude = json["longitude"].int16 ?? 0
-        self.windProbability = json["windProbability"].int16 ?? 0
+        self.latitude = json["latitude"].double ?? 0
+        self.longitude = json["longitude"].double ?? 0
+        self.windProbability = json["windProbability"].double ?? 0
         
     }
 
     @NSManaged public var country: String?
     @NSManaged public var isFavorite: Bool
     @NSManaged public var name: String?
-    @NSManaged public var spotId: String?
+    @NSManaged public var spotId: String
     @NSManaged public var whenToGo: String?
-    @NSManaged public var latitude: Int16
-    @NSManaged public var longitude: Int16
-    @NSManaged public var windProbability: Int16
-
+    @NSManaged public var latitude: Double
+    @NSManaged public var longitude: Double
+    @NSManaged public var windProbability: Double
 }
