@@ -42,7 +42,6 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate, S
             getAllSpots()
             tableView.reloadData()
         }
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -146,6 +145,7 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate, S
                     }
                 })
                 self.tableView.reloadData()
+                CoreDataManager.saveMainContext()
                 
             }
             favorites.backgroundColor = UIColor.defaultBlue
@@ -161,6 +161,7 @@ class ListViewController: UITableViewController, FilterViewControllerDelegate, S
                 })
                 
                 self.tableView.reloadData()
+                CoreDataManager.saveMainContext()
             }
             favorites.backgroundColor = UIColor.red
         }

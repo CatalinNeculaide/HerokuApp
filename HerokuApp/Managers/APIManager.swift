@@ -75,7 +75,6 @@ class APIManager {
                 completionHandler(dataResponse.result.isSuccess, dataResponse.result.error)
             } else {
                 print(dataResponse.result.error!)
-                APIManager.handleApiError(from: JSON(dataResponse.result.value!))
             }
 
         }
